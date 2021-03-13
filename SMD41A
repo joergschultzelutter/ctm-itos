@@ -1,0 +1,3 @@
+      *          DATENBAUSTEIN FÜR LISTE SMD41A                         28.08.92
+       01  DR1-PARAMETER.                                               28.08.92
+           03  DR1-NUMMER            PIC 9(08).                         08.02.92

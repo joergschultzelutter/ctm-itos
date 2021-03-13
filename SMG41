@@ -1,0 +1,249 @@
+      *********         Etikettendruckprogramm SMP41           *********SL060794
+      *****                         SMG41                          *****SL060794
+      *****           LETZTE ÜBERARBEITUNG   060794  sul           *****SL060794
+      ******************************************************************SL060794
+       #   LANGUAGE                 :=  COBOL;                          08.02.92
+       #   SYSTOOL   FILE           := 'NO',                            SL060794
+                     DIALOG         := 'YES',                           08.02.92
+                     UTILITIES      := 'NO',                            SL060794
+                     SVC            := 'YES',                           08.02.92
+                     ERRORMESSAGE   := 'YES';                           SL060794
+                                                                        08.02.92
+       #   COBRA     PGMID          := 'SMP41',                         08.02.92
+                     PGMPRJ         := 'SM',                            08.02.92
+                     PGMOBJECT      := 'UNIXMF',                        08.02.92
+                     PGMVERS        := '42',                            SL060794
+                     PGMAUTHOR      := 'SUL',                           08.02.92
+                     PGMTYPE        := 'MAIN',                          08.02.92
+                     DECPOINT       := 'COMMA',                         08.02.92
+                     SAFE           := 'YES';                           08.02.92
+                                                                        08.02.92
+       #   YCBEG16   HELPCALL     := 'YES',                             08.02.92
+                     USER         := <'BL1-USER'>,                      08.02.92
+                     COMPANY      := <'BL1-HAUS'>,                      08.02.92
+                     SECURITY     := '63',                              08.02.92
+                     SERVICE      := 'YES';                             08.02.92
+                                                                        08.02.92
+       #   REF REMARKS;                                                 08.02.92
+                                                                        08.02.92
+      ****************   Datei-Beschreibungen   ************************08.02.92
+       #   REF FILEDEF;                                                 SL060794
+       #   SCAN;                                                        SL060794
+       #   ICFDRU1                CLASS    := 'EXTERNAL',               08.02.92
+                                  DCL      := 'YES',                    08.02.92
+                                  TYPE     := 'FORMAT',                 08.02.92
+                                  FILENAME := 'DRU1',                   SL060794
+                                  PRINTDEV := 'PRINT-1';                08.02.92
+                                                                        08.02.92
+      ****************   Variablen + Konstanten   **********************08.02.92
+                                                                        08.02.92
+       #   REF MFIELD;                                                  08.02.92
+                                                                        08.02.92
+           03 WRK-M-ENDE            PIC X(01) VALUE LOW-VALUE.          08.02.92
+           03 WRK-M-ZAEHLER         PIC 9(08) $COMP$.                   SL060794
+           03 WRK-M-WIEDERHOL       PIC 9(02) $COMP$.                   SL060794
+                                                                        08.02.92
+       #   REF ZFIELD;                                                  08.02.92
+           03     F23-Z-BARFORM      PIC X(06)    VALUE "SMD41B".       SL060794
+                                                                        08.02.92
+       #   REF SFIELD;                                                  08.02.92
+       #     SMD41A;                                                    08.02.92
+       #     SMD411;                                                    08.02.92
+                                                                        SL060794
+       #   NOSCAN;                                                      SL060794
+       #   REF PROCESS;                                                 08.02.92
+      /                                                                 080292DP
+      ******************************************************************080292DP
+      *                                                                *080292DP
+      * NAME    : ABLAUF                                         (001) *080292DP
+      * FUNKTION: Steuerleiste                                         *080292DP
+      * INPUT   :                                                     **080292DP
+      * OUTPUT  :                                                     **080292DP
+      * I/O     :                                                     **080292DP
+      * WORK    :                                                     **080292DP
+      * USING   : ASTDIALOG, PICDIALOG, ENDDIALOG                      *080292DP
+      * CALLEDBY:                                                      *080292DP
+      * COMMENT : Ablaufsteuerung                                      *080292DP
+      *                                                                *080292DP
+      ******************************************************************080292DP
+                                                                        080292DP
+       ABLAUF SECTION.                                                  080292DP
+       ABLAS.                                                           080292DP
+                                                                        080292DP
+      *Bild eröffnen                                                   *080292DP
+       #   DIAOPEN                PIC   := '"SMB411"',                  08.02.92
+                                  FIELD := <'BL1-PARAMETER'>,           08.02.92
+                                  CLEAR := 'SCREEN',                    08.02.92
+                                  SAVE  := 'PIC',                       08.02.92
+                                  INIT  := 'YES';                       08.02.92
+                                                                        08.02.92
+      *Checkroutine Formular (CHFORM)                                  *SL060794
+           PERFORM CHFORM.                                              SL060794
+                                                                        SL060794
+      *Programm-Ident --> Bild                                         *SL060794
+           MOVE YCB-M-PGM-IDENT      TO BL1-PROGRAMM.                   SL060794
+                                                                        08.02.92
+      *Bild anzeigen                                                   *080292DP
+       #   DIADISPLAY;                                                  08.02.92
+           .                                                            08.02.92
+                                                                        080292DP
+      *DOWHILE kein Ende-Merker gesetzt                                *080292DP
+       ABLA005I.                                                        080292DP
+           IF WRK-M-ENDE = HIGH-VALUE                                   08.02.92
+             GO TO ABLA005IX.                                           080292DP
+                                                                        080292DP
+      *  Verarbeitung des Bildes                                       *080292DP
+       #   DIAACCEPT              PIC       := '"SMB411"',              08.02.92
+                                  ASTKEY    := 'ASTDIALOG',             08.02.92
+                                  FUNCINDEX := <'100','DRAUSWAHL'>,     SL060794
+                                  CLEARMESS := 'YES';                   08.02.92
+                                                                        080292DP
+      *  IF Ende-Taste gedrückt                                        *080292DP
+             IF DIA-I-RETURN NOT = DIA-K-ENDKEY                         08.02.92
+               GO TO ABLA105FX.                                         080292DP
+                                                                        080292DP
+      *    Ende-Merker setzen                                          *080292DP
+           MOVE HIGH-VALUE        TO WRK-M-ENDE                         08.02.92
+           .                                                            08.02.92
+                                                                        080292DP
+       ABLA105FX.                                                       080292DP
+      *  ENDIF                                                         *080292DP
+                                                                        080292DP
+             GO TO ABLA005I.                                            080292DP
+       ABLA005IX.                                                       080292DP
+      *ENDDO                                                           *080292DP
+                                                                        080292DP
+      *Bild schließen                                                   08.02.92
+       #   DIACLOSE               PIC := '"SMB411"';                    08.02.92
+           .                                                            08.02.92
+                                                                        08.02.92
+       ABLAUF-EXIT.                                                     080292DP
+           EXIT.                                                        080292DP
+                                                                        08.02.92
+       #   REF UPRO;                                                    08.02.92
+                                                                        08.02.92
+      /                                                                 080292DP
+      ******************************************************************080292DP
+      *                                                                *080292DP
+      * NAME    : ASTDIALOG                                      (002) *080292DP
+      * FUNKTION:                                                      *080292DP
+      * INPUT   :                                                     **080292DP
+      * OUTPUT  :                                                     **080292DP
+      * I/O     :                                                     **080292DP
+      * WORK    :                                                     **080292DP
+      * USING   :                                                      *080292DP
+      * CALLEDBY: ABLAUF                                               *08.02.92
+      * COMMENT : Verarbeitung                                         *080292DP
+      *                                                                *080292DP
+      ******************************************************************080292DP
+                                                                        080292DP
+       ASTDIALOG SECTION.                                               080292DP
+       ASTDS.                                                           080292DP
+                                                                        08.02.92
+      *Drucker eröffnen                                                 08.02.92
+       #   OPEN 'DRU1';                                                 08.02.92
+                                                                        08.02.92
+      *Formular eröffnen                                                08.02.92
+       #   OPEN 'DRU1',           FORMAT  := 'F23-Z-BARFORM',           SL060794
+                                  RECORDS := <'DR1-PARAMETER'>;         08.02.92
+      *Bildzähler eröffnen                                              08.02.92
+       #   CNTOPEN                MASK    := '"      druckt"';          08.02.92
+                                                                        08.02.92
+      *eingegebene 'von Nummer' -> Nummern-Zähler                      *080292DP
+           MOVE BL1-VNUMMER       TO WRK-M-ZAEHLER                      08.02.92
+           .                                                            08.02.92
+                                                                        080292DP
+      *DOWHILE Zähler <= eingegebene 'bis Nummer'                      *080292DP
+       ASTD005I.                                                        080292DP
+           IF WRK-M-ZAEHLER GREATER BL1-BNUMMER                         08.02.92
+             GO TO ASTD005IX.                                           080292DP
+                                                                        080292DP
+      *      1 -> Wiederholungszähler                                   08.02.92
+             MOVE YCB-K-1         TO WRK-M-WIEDERHOL                    08.02.92
+             .                                                          08.02.92
+                                                                        080292DP
+      *  DOWHILE Wiederholungs-Zähler <= eingebene 'Wiederholungen'    *080292DP
+       ASTD105I.                                                        080292DP
+             IF WRK-M-WIEDERHOL GREATER BL1-WIEDERHOL                   08.02.92
+               GO TO ASTD105IX.                                         080292DP
+                                                                        08.02.92
+      *        Nummer -> Druckfeld                                      08.02.92
+               MOVE WRK-M-ZAEHLER TO DR1-NUMMER                         08.02.92
+                                                                        08.02.92
+      *        Etikettenzeile drucken                                   08.02.92
+       #       PUT 'DRU1',        GROUP := '1';                         08.02.92
+                                                                        08.02.92
+      *        Bild-Zähler erhöhen                                      08.02.92
+       #       CNTDISP;                                                 08.02.92
+                                                                        080292DP
+      *        Wiederholungszähler erhöhen                              08.02.92
+               ADD YCB-K-1            TO WRK-M-WIEDERHOL                08.02.92
+                                                                        080292DP
+               GO TO ASTD105I.                                          080292DP
+       ASTD105IX.                                                       080292DP
+      *  ENDDO                                                         *080292DP
+                                                                        080292DP
+      *  Nummern-Zähler erhöhen                                        *080292DP
+             ADD YCB-K-1     TO WRK-M-ZAEHLER                           08.02.92
+                                                                        080292DP
+             GO TO ASTD005I.                                            080292DP
+       ASTD005IX.                                                       080292DP
+      *ENDDO                                                           *080292DP
+                                                                        08.02.92
+      *Bild-Zähler schließen                                            08.02.92
+       #   CNTCLOSE;                                                    08.02.92
+                                                                        08.02.92
+      *Formular schließen                                               08.02.92
+       #   CLOSE 'DRU1',          'FORMAT';                             08.02.92
+                                                                        08.02.92
+      *Drucker schließen                                                08.02.92
+       #   CLOSE 'DRU1';                                                08.02.92
+           .                                                            08.02.92
+                                                                        08.02.92
+       ASTDIALOG-EXIT.                                                  08.02.92
+           EXIT.                                                        08.02.92
+      /                                                                 SL060794
+      ******************************************************************SL060794
+      *                                                                *SL060794
+      * NAME    : CHFORM                                         (   ) *SL060794
+      * FUNKTION: Formular ermitteln                                   *SL060794
+      * INPUT   :                                                     **SL060794
+      * OUTPUT  :                                                     **SL060794
+      * I/O     :                                                     **SL060794
+      * WORK    :                                                     **SL060794
+      * USING   :                                                      *SL060794
+      * CALLEDBY: ABLAUF                                               *SL060794
+      * COMMENT :                                                      *SL060794
+      *                                                                *SL060794
+      ******************************************************************SL060794
+       CHFIRM SECTION.                                                  SL060794
+       CHFIS.                                                           SL060794
+                                                                        SL060794
+      *Formular mit Standardformular vorbesetzen                       *SL060794
+             MOVE "SMD41B"           TO F23-Z-BARFORM.                  SL060794
+                                                                        SL060794
+       CHFIRM-EXIT.                                                     SL060794
+         EXIT.                                                          SL060794
+      /                                                                 SL060794
+      ******************************************************************SL060794
+      *                                                                *SL060794
+      * NAME    : DRAUSWAHL                                      (   ) *SL060794
+      * FUNKTION: Druckerauswahl per Assprintdev                       *SL060794
+      * INPUT   :                                                     **SL060794
+      * OUTPUT  :                                                     **SL060794
+      * I/O     :                                                     **SL060794
+      * WORK    :                                                     **SL060794
+      * USING   :                                                      *SL060794
+      * CALLEDBY:                                                      *SL060794
+      * COMMENT :                                                      *SL060794
+      *                                                                *SL060794
+      ******************************************************************SL060794
+       DRAUSWAHL SECTION.                                               SL060794
+       DRAUS.                                                           SL060794
+                                                                        SL060794
+      *Assprintdev                                                     *SL060794
+       #   ASSPRINTDEV;                                                 SL060794
+           .                                                            SL060794
+                                                                        SL060794
+       DRAUSWAHL-EXIT.                                                  SL060794
+         EXIT.                                                          SL060794

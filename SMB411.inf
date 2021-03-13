@@ -1,0 +1,5 @@
+SMB411 99.10.26 COBOL
+NO_PATHS 1
+/usr/projects/samples/cbl/cpy
+123456*8901234567890
+           COPY "SMD411.cpy"

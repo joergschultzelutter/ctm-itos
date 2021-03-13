@@ -1,0 +1,11 @@
+      *********       Datenbaustein für Bild SMB411            *********SL060794
+      *****                         SMD411                         *****SL060794
+      *****           LETZTE ÜBERARBEITUNG   060794  sul           *****SL060794
+      ******************************************************************SL060794
+       01  BL1-PARAMETER.                                               28.08.92
+           03  BL1-HAUS              PIC 9(02)   $COMP$.                SL060794
+           03  BL1-USER              PIC X(30).                         03.01.92
+           03  BL1-VNUMMER           PIC 9(08)   $COMP$.                SL060794
+           03  BL1-BNUMMER           PIC 9(08)   $COMP$.                SL060794
+           03  BL1-WIEDERHOL         PIC 9(02)   $COMP$.                SL060794
+           03  BL1-PROGRAMM          PIC X(18).                         SL060794

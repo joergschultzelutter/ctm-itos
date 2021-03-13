@@ -1,0 +1,38 @@
+$SET COMMA CURR=$ POSQ=Y NEGQ=N FUNC 2 10                                       
+SCREEN.I01.900331 SMB411 12/12/96 22 80 1 1 X                                   
+NO_MASKS 11                                                                     
+MASK 0 2 61 N N \Haus :\                                                        
+MASK 0 2 4 N N \Modul :\                                                        
+MASK 0 12 25 N N \Wiederholungen :\                                             
+MASK 0 9 25 N N \bis-Nummer     :\                                              
+MASK 0 8 25 N N \von-Nummer     :\                                              
+MASK 0 1 3 N UB \ Barcode-Erstellung \                                          
+MASK 105 23 1 d N \Function:\                                                   
+MASK 101 23 1 N N \Command :\                                                   
+MASK 102 23 1 N N \Message :\                                                   
+MASK 103 23 1 N N \No Error \                                                   
+MASK 104 23 1 N N \Error   :\                                                   
+NO_FIELDS 6                                                                     
+FIELD 4 0 0 0 0 PAR(1 2 1 a 30.0) \\ 1 60 FORM(N s 18.0) LNN00NN \\ \BL1-USER\  
+FIELD 5 0 1 0 0 PAR(1 0 1 d 2.0) \\ 2 68 FORM(N p 2.0 Z9 ) LNN00NN \\ \BL1-HAUS\
+FIELD 6 0 2 0 0 PAR(1 44 1 a 18.0) \\ 2 12 FORM(N s 18.0) LNN00NN \\ \BL1-PROGRA
+MM\                                                                             
+FIELD 7 0 3 0 0 PAR(1 42 1 d 2.0) \1\ 12 48 FORM(N p 2.0 Z9 ) NNN00NN \1..99\ \B
+L1-WIEDERHOL\                                                                   
+FIELD 3 0 4 0 0 PAR(1 37 1 d 8.0) \99999999\ 9 42 FORM(N p 8.0 ZZZZZZZ9 ) NNN00N
+      N \1..99999999\ \BL1-BNUMMER\                                             
+FIELD 2 0 5 0 0 PAR(1 32 1 d 8.0) \0\ 8 42 FORM(N p 8.0 ZZZZZZZ9 ) NNN00NN \1..9
+9999999\ \BL1-VNUMMER\                                                          
+NO_FUNCS 2
+9 l 7 m \Matchcode\ 
+100 N 2 d \Druckerzuordnung\ 
+_PULLDOWNS_ 5
+Programm		5 6
+Bearbeiten		 9
+Info		90
+Optionen		93 100
+Hilfe		14 11 10 15 1
+DOC                                                                             
+12/12/96 115614585 \\ \no description\                                          
+FUNC_DOC 9 \\                                                                   
+FUNC_DOC 100 \\                                                                 
